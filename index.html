@@ -4,46 +4,187 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>QB Dashboards (2025)</title>
+
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Expires" content="0"/>
+
   <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:40px;max-width:920px}
-    h1{margin:0 0 8px}
-    ul{line-height:1.9}
+    :root{
+      --text:#111;
+      --muted:#666;
+      --bg:#fff;
+      --card:#fafafa;
+      --border:rgba(0,0,0,0.12);
+      --pill: rgba(0,0,0,0.06);
+      --btn:#111;
+      --btn2:#333;
+    }
+    body{
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      margin:40px;
+      max-width:980px;
+      background:var(--bg);
+      color:var(--text);
+    }
+    h1{margin:0 0 8px;letter-spacing:-0.4px}
+    .update{color:var(--muted);font-size:14px;margin:0 0 18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .pill{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:6px 10px;border-radius:999px;
+      background:var(--pill);border:1px solid var(--border);
+      color:rgba(0,0,0,0.70);font-size:12px;font-weight:650
+    }
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}
+
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:12px 0 18px}
+    input[type="search"]{
+      width:min(520px,100%);
+      padding:12px 14px;
+      border:1px solid var(--border);
+      border-radius:12px;
+      background:#fff;
+      font-size:16px;
+      outline:none;
+    }
+    input[type="search"]:focus{border-color:rgba(0,0,0,0.25)}
+    button{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:12px 16px;border-radius:12px;
+      border:1px solid var(--border);
+      background:#fff;color:var(--text);
+      cursor:pointer;font-weight:650
+    }
+    button:hover{background:var(--card)}
+    button.primary{
+      background:var(--btn);
+      color:#fff;
+      border:1px solid transparent;
+      box-shadow:0 10px 25px rgba(0,0,0,0.12);
+    }
+    button.primary:hover{background:var(--btn2)}
+    .count{color:var(--muted);font-size:14px}
+
+    ul{line-height:1.9;padding-left:18px;margin:0}
+    li{margin:2px 0}
     a{text-decoration:none}
     a:hover{text-decoration:underline}
-    .update{color:#666;font-size:14px;margin:0 0 18px}
-    .note{color:#666;margin-top:14px}
+
+    .note{color:var(--muted);margin-top:16px;font-size:14px}
+    .grid{display:grid;grid-template-columns:1fr;gap:10px}
+    @media (min-width:720px){
+      .grid{grid-template-columns:1fr 1fr}
+      ul{padding-left:20px}
+    }
   </style>
 </head>
 <body>
   <h1>QB Dashboards (2025)</h1>
 
-  <p class="update">
-    Last updated:
-    <script>
-      document.write(new Date().toISOString().slice(0,10));
-    </script>
-  </p>
+  <div class="update">
+    <div>Last updated: <span id="last-updated"></span></div>
+    <span class="pill">Build <code id="build-id">20260112b</code></span>
+    <span class="pill">URL <code id="page-url"></code></span>
+  </div>
 
-  <ul>
-    <li><a href="2025_NE_Drake_Maye.html">NE — Drake Maye</a></li>
-    <li><a href="2025_DEN_Bo_Nix.html">DEN — Bo Nix</a></li>
-    <li><a href="2025_PIT_Aaron_Rodgers.html">PIT — Aaron Rodgers</a></li>
-    <li><a href="2025_PIT_Jalen_Hurts.html">PIT — Jalen Hurts</a></li>
+  <div class="toolbar">
+    <input id="q" type="search" placeholder="Search team or player (e.g., BAL, Stafford)" autocomplete="off" />
+    <button class="primary" id="reload-btn" type="button">Reload (cache-bust)</button>
+    <button id="show-all" type="button">Show all</button>
+    <span class="count" id="count"></span>
+  </div>
 
-    <li><a href="2025_BAL_Lamar_Jackson.html">BAL — Lamar Jackson</a></li>
-    <li><a href="2025_BUF_Josh_Allen.html">BUF — Josh Allen</a></li>
-    <li><a href="2025_GB_Jordan_Love.html">GB — Jordan Love</a></li>
-    <li><a href="2025_LAC_Justin_Herbert.html">LAC — Justin Herbert</a></li>
-    <li><a href="2025_LA_Matthew_Stafford.html">LA — Matthew Stafford</a></li>
-    <li><a href="2025_CHI_Caleb_Williams.html">CHI — Caleb Williams</a></li>
-    <li><a href="2025_HOU_C.J._Stroud.html">HOU — C.J. Stroud</a></li>
-
-    <li><a href="2025_CAR_Bryce_Young.html">CAR — Bryce Young</a></li>
-    <li><a href="2025_SEA_Sam_Darnold.html">SEA — Sam Darnold</a></li>
-    <li><a href="2025_SF_Brock_Purdy.html">SF — Brock Purdy</a></li>
-    <li><a href="2025_TB_Baker_Mayfield.html">TB — Baker Mayfield</a></li>
-  </ul>
+  <div class="grid">
+    <ul id="list">
+      <li><a href="2025_2TM_Joe_Flacco.html">2TM — Joe Flacco</a></li>
+      <li><a href="2025_ARI_Kyler_Murray.html">ARI — Kyler Murray</a></li>
+      <li><a href="2025_ATL_Kirk_Cousins.html">ATL — Kirk Cousins</a></li>
+      <li><a href="2025_BAL_Lamar_Jackson.html">BAL — Lamar Jackson</a></li>
+      <li><a href="2025_BAL_Tyler_Huntley.html">BAL — Tyler Huntley</a></li>
+      <li><a href="2025_BUF_Josh_Allen.html">BUF — Josh Allen</a></li>
+      <li><a href="2025_CAR_Bryce_Young.html">CAR — Bryce Young</a></li>
+      <li><a href="2025_CHI_Caleb_Williams.html">CHI — Caleb Williams</a></li>
+      <li><a href="2025_CIN_Jake_Browning.html">CIN — Jake Browning</a></li>
+      <li><a href="2025_CLE_Dillon_Gabriel.html">CLE — Dillon Gabriel</a></li>
+      <li><a href="2025_DAL_Dak_Prescott.html">DAL — Dak Prescott</a></li>
+      <li><a href="2025_DEN_Bo_Nix.html">DEN — Bo Nix</a></li>
+      <li><a href="2025_DET_Jared_Goff.html">DET — Jared Goff</a></li>
+      <li><a href="2025_GB_Jordan_Love.html">GB — Jordan Love</a></li>
+      <li><a href="2025_GNB_Jordan_Love.html">GNB — Jordan Love</a></li>
+      <li><a href="2025_HOU_C.J._Stroud.html">HOU — C.J. Stroud</a></li>
+      <li><a href="2025_HOU_Davis_Mills.html">HOU — Davis Mills</a></li>
+      <li><a href="2025_IND_Philip_Rivers.html">IND — Philip Rivers</a></li>
+      <li><a href="2025_JAX_Trevor_Lawrence.html">JAX — Trevor Lawrence</a></li>
+      <li><a href="2025_KAN_Patrick_Mahomes.html">KAN — Patrick Mahomes</a></li>
+      <li><a href="2025_LAC_Justin_Herbert.html">LAC — Justin Herbert</a></li>
+      <li><a href="2025_LAR_Matthew_Stafford.html">LAR — Matthew Stafford</a></li>
+      <li><a href="2025_LA_Matthew_Stafford.html">LA — Matthew Stafford</a></li>
+      <li><a href="2025_LVR_Geno_Smith.html">LVR — Geno Smith</a></li>
+      <li><a href="2025_MIA_Quinn_Ewers.html">MIA — Quinn Ewers</a></li>
+      <li><a href="2025_MIN_Carson_Wentz.html">MIN — Carson Wentz</a></li>
+      <li><a href="2025_NE_Drake_Maye.html">NE — Drake Maye</a></li>
+      <li><a href="2025_NOR_Spencer_Rattler.html">NOR — Spencer Rattler</a></li>
+      <li><a href="2025_NWE_Drake_Maye.html">NWE — Drake Maye</a></li>
+      <li><a href="2025_NYG_Jameis_Winston.html">NYG — Jameis Winston</a></li>
+      <li><a href="2025_NYJ_Brady_Cook.html">NYJ — Brady Cook</a></li>
+      <li><a href="2025_PHI_Jalen_Hurts.html">PHI — Jalen Hurts</a></li>
+      <li><a href="2025_PIT_Aaron_Rodgers.html">PIT — Aaron Rodgers</a></li>
+      <li><a href="2025_PIT_Jalen_Hurts.html">PIT — Jalen Hurts</a></li>
+      <li><a href="2025_SEA_Sam_Darnold.html">SEA — Sam Darnold</a></li>
+      <li><a href="2025_SF_Brock_Purdy.html">SF — Brock Purdy</a></li>
+      <li><a href="2025_SFO_Mac_Jones.html">SFO — Mac Jones</a></li>
+      <li><a href="2025_TAM_Baker_Mayfield.html">TAM — Baker Mayfield</a></li>
+      <li><a href="2025_TB_Baker_Mayfield.html">TB — Baker Mayfield</a></li>
+      <li><a href="2025_TEN_Cam_Ward.html">TEN — Cam Ward</a></li>
+      <li><a href="2025_WAS_Jayden_Daniels.html">WAS — Jayden Daniels</a></li>
+    </ul>
+  </div>
 
   <div class="note">Hosted on GitHub Pages.</div>
+
+  <script>
+    const d = new Date();
+    document.getElementById("last-updated").textContent = d.toISOString().slice(0,10);
+    document.getElementById("page-url").textContent = location.pathname + location.search;
+
+    const q = document.getElementById("q");
+    const list = document.getElementById("list");
+    const items = Array.from(list.querySelectorAll("li"));
+    const count = document.getElementById("count");
+
+    function updateCount() {
+      const visible = items.filter(li => li.style.display !== "none").length;
+      count.textContent = `${visible} / ${items.length}`;
+    }
+
+    function applyFilter() {
+      const needle = (q.value || "").trim().toLowerCase();
+      if (!needle) {
+        items.forEach(li => li.style.display = "");
+        updateCount();
+        return;
+      }
+      items.forEach(li => {
+        const t = li.textContent.toLowerCase();
+        li.style.display = t.includes(needle) ? "" : "none";
+      });
+      updateCount();
+    }
+
+    q.addEventListener("input", applyFilter);
+    document.getElementById("show-all").addEventListener("click", () => {
+      q.value = "";
+      applyFilter();
+      q.focus();
+    });
+
+    document.getElementById("reload-btn").addEventListener("click", () => {
+      const u = new URL(location.href);
+      u.searchParams.set("cb", String(Date.now()));
+      location.replace(u.toString());
+    });
+
+    updateCount();
+  </script>
 </body>
 </html>
